@@ -1,4 +1,4 @@
-*.pyc
 *.cache
+*.pyc
 *.sublime-project
 package-metadata.json
