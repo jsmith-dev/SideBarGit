@@ -98,7 +98,7 @@ def closed_affected_items(items):
     return closed_items
 
 
-def reopen_affected_items(closed_items):
+def reopen_affected_items(closed_items, active):
     active_view = sublime.active_window().active_view()
 
     for item in closed_items:
@@ -106,6 +106,8 @@ def reopen_affected_items(closed_items):
         if window and os.path.exists(file_name):
             view = window.open_file(file_name)
             window.set_view_index(view, view_index[0], view_index[1])
+            if file_name == active:
+                active_view = view
     sublime.active_window().focus_view(active_view)
 
 
@@ -677,6 +679,7 @@ class SideBarGitRevertTrackedCommand(sublime_plugin.WindowCommand):
                 "Discard changes to tracked on selected items? ", self.run, paths
             )
         else:
+            active = sublime.active_window().active_view().file_name()
             items = SideBarSelection(paths).getSelectedItems()
             closed_items = closed_affected_items(items)
             for item in items:
@@ -693,7 +696,7 @@ class SideBarGitRevertTrackedCommand(sublime_plugin.WindowCommand):
                     failed = True
             if not failed:
                 SideBarGit().status("Discarded changes to tracked on selected items")
-            reopen_affected_items(closed_items)
+            reopen_affected_items(closed_items, active)
 
     def is_enabled(self, paths=[]):
         return SideBarSelection(paths).len() > 0
