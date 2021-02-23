@@ -523,7 +523,7 @@ class SideBarGitLogStatListCommitLatestCommand(sublime_plugin.WindowCommand):
         return SideBarSelection(paths).len() > 0
 
 
-class SideBarGitLogExtendedLatestCommand(sublime_plugin.WindowCommand):
+class SideBarGitLogExtendedLatest30Command(sublime_plugin.WindowCommand):
     def run(self, paths=[]):
         for item in SideBarSelection(paths).getSelectedItems():
             object = Object()
@@ -533,6 +533,32 @@ class SideBarGitLogExtendedLatestCommand(sublime_plugin.WindowCommand):
                 "log",
                 "-n",
                 "30",
+                "-p",
+                "--decorate",
+                "--no-color",
+                "--",
+                item.forCwdSystemName(),
+            ]
+            object.title = "Log: " + item.name()
+            object.no_results = "No log to show"
+            object.syntax_file = "Packages/SideBarGit/DiffSideBarGit.hidden-tmLanguage"
+            object.word_wrap = False
+            SideBarGit().run(object)
+
+    def is_enabled(self, paths=[]):
+        return SideBarSelection(paths).len() > 0
+
+
+class SideBarGitLogExtendedLatest100Command(sublime_plugin.WindowCommand):
+    def run(self, paths=[]):
+        for item in SideBarSelection(paths).getSelectedItems():
+            object = Object()
+            object.item = item
+            object.command = [
+                "git",
+                "log",
+                "-n",
+                "100",
                 "-p",
                 "--decorate",
                 "--no-color",
@@ -1831,10 +1857,10 @@ class SideBarGitStatusBarBranchGet(threading.Thread):
     #   var commands = '';
     #   for(var id in repos.r)
     #   {
-    # 	commands += 'cd '+repos.r[id].cwd+'';
-    # 	commands += '\n';
-    # 	commands += 'git tag "'+this.s.filePathEscape(aMsg)+'" >>'+repos.obj.output+' 2>&1';
-    # 	commands += '\n';
+    #   commands += 'cd '+repos.r[id].cwd+'';
+    #   commands += '\n';
+    #   commands += 'git tag "'+this.s.filePathEscape(aMsg)+'" >>'+repos.obj.output+' 2>&1';
+    #   commands += '\n';
     #   }
     #   this.s.fileWrite(repos.obj.sh, commands);
     #   this.run(repos.obj.sh, repos.obj.outputFile, 'Tag "'+aMsg+'" added', false, true);
@@ -1849,10 +1875,10 @@ class SideBarGitStatusBarBranchGet(threading.Thread):
     #   var commands = '';
     #   for(var id in repos.r)
     #   {
-    # 	commands += 'cd '+repos.r[id].cwd+'';
-    # 	commands += '\n';
-    # 	commands += 'git tag -d "'+this.s.filePathEscape(aMsg)+'" >>'+repos.obj.output+' 2>&1';
-    # 	commands += '\n';
+    #   commands += 'cd '+repos.r[id].cwd+'';
+    #   commands += '\n';
+    #   commands += 'git tag -d "'+this.s.filePathEscape(aMsg)+'" >>'+repos.obj.output+' 2>&1';
+    #   commands += '\n';
     #   }
     #   this.s.fileWrite(repos.obj.sh, commands);
     #   this.run(repos.obj.sh, repos.obj.outputFile, '', false, true);
@@ -1865,7 +1891,7 @@ class SideBarGitStatusBarBranchGet(threading.Thread):
     # for(var id in repos.r)
     # {
     #   var version = this.repositoryPreference(id, 'version') || 0;
-    # 	  version++;
+    #     version++;
     #   this.repositoryPreference(id, 'version', version);
 
     #   commands += 'cd '+repos.r[id].cwd+'';
@@ -1897,17 +1923,17 @@ class SideBarGitStatusBarBranchGet(threading.Thread):
     # this.s.fileWrite(sh, 'cd '+aObj.cwd+' \n echo `git for-each-ref refs/tags --sort=-authordate` \n');
 
     # var tags = this.run(sh, sh+'.diff', '', false, false, true).split('\n');
-    # 	tags.shift();
-    # 	tags.shift();
-    # 	tags.shift();
-    # 	tags.shift();
-    # 	tags.shift();
-    # 	tags = tags.join('');
-    # 	tags = tags.split('refs/tags/');
-    # 	tags.shift();
-    # 	for(var id in tags)
-    # 	  tags[id] = tags[id].split(' ')[0];
-    # 	tags.reverse();
+    #   tags.shift();
+    #   tags.shift();
+    #   tags.shift();
+    #   tags.shift();
+    #   tags.shift();
+    #   tags = tags.join('');
+    #   tags = tags.split('refs/tags/');
+    #   tags.shift();
+    #   for(var id in tags)
+    #     tags[id] = tags[id].split(' ')[0];
+    #   tags.reverse();
     # return tags;
     #  }
 
