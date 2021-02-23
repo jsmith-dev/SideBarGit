@@ -132,7 +132,7 @@
 	},
 
 	{
-		"caption": "Git (SideBarGit): Log: short summary of changes last 30",
+		"caption": "Git (SideBarGit): Log: short summary of changes last 100",
 		"command": "side_bar_git_log_stat_short_latest",
 		"args": { "paths": [] }
 	},
