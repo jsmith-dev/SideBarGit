@@ -19,7 +19,7 @@ Usage
 
 ### Installation
 
-Download or clone the contents of this repository to a folder named exactly as the package name into the Packages/ folder of ST.
+Download or clone the contents of this repository to a folder named exactly as the package name (i.e "SideBarGit") into the Packages/ folder of ST.
 
 Provides the following commands
 ------------------
